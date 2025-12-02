@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -25,8 +24,7 @@ func main() {
 
 		for i := part1; i <= part2; i++ {
 
-			isInvalid := isInvalidID(i)
-			if isInvalid {
+			if isInvalidID(i) {
 				total += i
 			}
 		}
@@ -82,7 +80,12 @@ func compareStrings(values []string) bool {
 }
 
 func splitInGroups(s string, size int) []string {
-	re := regexp.MustCompile(".{1," + strconv.Itoa(size) + "}")
-	groups := re.FindAllString(s, -1)
-	return groups
+	var result []string
+
+	for i := 0; i < len(s); i += size {
+		end := min(i+size, len(s))
+		result = append(result, s[i:end])
+	}
+
+	return result
 }
