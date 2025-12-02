@@ -55,9 +55,8 @@ func isInvalidID(id int) bool {
 
 		if len(numberStr)%idx == 0 && idx != 1 {
 			size := len(numberStr) / idx
-			groups := splitInGroups(numberStr, size)
 
-			if compareStrings(groups) {
+			if compareStrings(numberStr, size) {
 				return true
 			}
 		}
@@ -65,27 +64,15 @@ func isInvalidID(id int) bool {
 	return false
 }
 
-func compareStrings(values []string) bool {
-	if len(values) < 2 {
-		return false
-	}
-
-	firstValue := values[0]
-	for _, value := range values[1:] {
-		if value != firstValue {
+func compareStrings(s string, size int) bool {
+	value := s[0:size]
+	for i := size; i < len(s); i += size {
+		end := min(i+size, len(s))
+		if s[i:end] != value {
 			return false
 		}
+		value = s[i:end]
 	}
+
 	return true
-}
-
-func splitInGroups(s string, size int) []string {
-	var result []string
-
-	for i := 0; i < len(s); i += size {
-		end := min(i+size, len(s))
-		result = append(result, s[i:end])
-	}
-
-	return result
 }
