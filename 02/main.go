@@ -54,9 +54,7 @@ func isInvalidID(id int) bool {
 		idx += 1
 
 		if len(numberStr)%idx == 0 && idx != 1 {
-			size := len(numberStr) / idx
-
-			if compareStrings(numberStr, size) {
+			if compareStrings(numberStr, len(numberStr)/idx) {
 				return true
 			}
 		}
