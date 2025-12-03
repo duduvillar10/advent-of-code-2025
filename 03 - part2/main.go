@@ -26,7 +26,18 @@ func main() {
 		pivotBank := bank[0:batteryCapacity]
 
 		for i := batteryCapacity; i < len(bank); i++ {
-			pivotBank = removeLowestBattery(pivotBank + string(bank[i]))
+
+			newBank := pivotBank + string(bank[i])
+
+			for j := 0; j < len(newBank)-1; j++ {
+				current := convertToInt(string(newBank[j]))
+				next := convertToInt(string(newBank[j+1]))
+
+				if current < next {
+					pivotBank = newBank[0:j] + newBank[j+1:]
+					break
+				}
+			}
 		}
 
 		value, err := strconv.Atoi(pivotBank)
@@ -38,19 +49,6 @@ func main() {
 	}
 
 	println("p1:", total)
-}
-
-func removeLowestBattery(bank string) string {
-	for i := 0; i < len(bank)-1; i++ {
-		current := convertToInt(string(bank[i]))
-		next := convertToInt(string(bank[i+1]))
-
-		if current < next {
-			return bank[0:i] + bank[i+1:]
-		}
-	}
-
-	return bank[0 : len(bank)-1]
 }
 
 func convertToInt(s string) int {
