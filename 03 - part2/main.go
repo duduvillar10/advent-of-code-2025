@@ -40,12 +40,7 @@ func main() {
 			}
 		}
 
-		value, err := strconv.Atoi(pivotBank)
-		if err != nil {
-			panic(err)
-		}
-
-		total += value
+		total += convertToInt(pivotBank)
 	}
 
 	println("p1:", total)
