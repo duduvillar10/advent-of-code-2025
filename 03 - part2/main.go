@@ -26,15 +26,14 @@ func main() {
 		pivotBank := bank[0:batteryCapacity]
 
 		for i := batteryCapacity; i < len(bank); i++ {
-			value := convertToInt(string(bank[i]))
-			lastFromPivot := convertToInt(string(pivotBank[batteryCapacity-1]))
-
 			newBank := removeLowestBatteryFrontToBack(pivotBank)
 			if newBank != pivotBank {
 				pivotBank = newBank + string(bank[i])
 				continue
 			}
 
+			value := convertToInt(string(bank[i]))
+			lastFromPivot := convertToInt(string(pivotBank[batteryCapacity-1]))
 			if value > lastFromPivot {
 				pivotBank = removeLowestBatteryBackToFront(pivotBank) + string(bank[i])
 			}
