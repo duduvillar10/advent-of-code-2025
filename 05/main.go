@@ -13,36 +13,29 @@ func main() {
 		panic(err)
 	}
 
-	database := []string{}
+	groupDatabases := []string{}
 	if len(values) > 0 {
-		database = strings.Split(strings.TrimSpace(string(values)), "\n")
+		groupDatabases = strings.Split(strings.TrimSpace(string(values)), "\n\n")
 	}
+
+	rangeIds := strings.Split(strings.TrimSpace(groupDatabases[0]), "\n")
+	ids := strings.Split(strings.TrimSpace(groupDatabases[1]), "\n")
 
 	freshIDItens := [][]int{}
 
-	splitIndex := -1
+	for _, entry := range rangeIds {
+		parts := strings.Split(entry, "-")
+		start := convertToInt(parts[0])
+		end := convertToInt(parts[1])
 
-	for i, entry := range database {
-		if strings.Contains(entry, "-") {
-			parts := strings.Split(entry, "-")
-			start := convertToInt(parts[0])
-			end := convertToInt(parts[1])
-
-			freshIDItens = append(freshIDItens, []int{start, end})
-			continue
-		}
-
-		if entry == "" {
-			splitIndex = i
-			break
-		}
+		freshIDItens = append(freshIDItens, []int{start, end})
 	}
 
 	total := 0
 
 outer:
-	for i := splitIndex + 1; i < len(database); i++ {
-		singleID := convertToInt(database[i])
+	for i := range ids {
+		singleID := convertToInt(ids[i])
 
 		for _, idItem := range freshIDItens {
 			if singleID >= idItem[0] && singleID <= idItem[1] {
@@ -54,15 +47,7 @@ outer:
 
 	// Process ranges for p2
 
-	newDatabase := [][]int{}
-
-	for i := 0; i < splitIndex; i++ {
-		values := strings.Split(database[i], "-")
-		ai := convertToInt(values[0])
-		bi := convertToInt(values[1])
-
-		newDatabase = append(newDatabase, []int{ai, bi})
-	}
+	newDatabase := freshIDItens
 
 	sort.Slice(newDatabase, func(i, j int) bool {
 		return newDatabase[i][0] < newDatabase[j][0]
@@ -70,7 +55,7 @@ outer:
 
 	totalp2 := 0
 
-	for i := 0; i < len(newDatabase); i++ {
+	for i := range newDatabase {
 		current := newDatabase[i]
 		totalp2 += current[1] - current[0] + 1
 
