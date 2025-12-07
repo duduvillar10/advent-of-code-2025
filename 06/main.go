@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	values, err := os.ReadFile("06/input.txt")
 	if err != nil {
 		panic(err)
@@ -27,22 +28,20 @@ func main() {
 
 	total := 0
 
-	for colIdx := 0; colIdx < len(header); colIdx++ {
-		totalColMul := 1
-		totalColSum := 0
-
+	for colIdx := range header {
 		if header[colIdx] == "+" {
 			for rowIdx := 0; rowIdx < len(allNumbers)-1; rowIdx++ {
-				totalColSum += convertToInt(allNumbers[rowIdx][colIdx])
+				total += convertToInt(allNumbers[rowIdx][colIdx])
 			}
-			total += totalColSum
+			continue
 		}
 
 		if header[colIdx] == "*" {
+			colProduct := 1
 			for rowIdx := 0; rowIdx < len(allNumbers)-1; rowIdx++ {
-				totalColMul *= convertToInt(allNumbers[rowIdx][colIdx])
+				colProduct *= convertToInt(allNumbers[rowIdx][colIdx])
 			}
-			total += totalColMul
+			total += colProduct
 		}
 	}
 
